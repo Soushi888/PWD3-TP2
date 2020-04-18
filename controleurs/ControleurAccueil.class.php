@@ -3,6 +3,14 @@
 class ControleurAccueil {
 
     public function __construct() {
-        throw new exception ("Controleur Accueil non encore développé.");
+        $this->accueil();
+    }
+
+    /**
+     * Affiche la page d'accueil 
+     *
+     */    
+    public function accueil() {
+        $vue = new Vue("Accueil");
     }
 }

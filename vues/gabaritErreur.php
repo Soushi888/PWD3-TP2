@@ -8,6 +8,7 @@
 <body>
     <div id="global">
         <div id="contenu">
+            <pre><?= var_dump($_SERVER["REQUEST_URI"]) ?></pre>
             <?php echo $contenu ?> <!-- contenu d'une vue spécifique -->
         </div>
     </div>

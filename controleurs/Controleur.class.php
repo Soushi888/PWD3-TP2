@@ -2,7 +2,7 @@
 
 class Controleur {
 
-    public static $base_uri = "\/p41\/tp2\/";
+    public static $base_uri = "\/PWD3-TP2\/";
     
     private $controleurs = array(
     //  uri         => "classe du contrôleur"
