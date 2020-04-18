@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteBase /p41/tp2/
+RewriteRule ^.*php$ index.php [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule . index.php [L]
