@@ -2,7 +2,7 @@
 
 class Controleur {
 
-    public static $base_uri = "\/p41\/tp2\/";
+    public static $base_uri = "\/PWD3-TP2\/";
     
     private $controleurs = array(
     //  uri         => "classe du contrôleur"
@@ -29,7 +29,7 @@ class Controleur {
             $regExp = '/^'.self::$base_uri.'([^\?]*)(\?.*)?$/';
             $requestUri = strtolower($_SERVER["REQUEST_URI"]);
             if (preg_match($regExp, $requestUri, $result)) {
-                // var_dump($result); exit; // DEBUG P41
+                var_dump($result); exit; // DEBUG P41
                 foreach ($this->controleurs as $uri => $controleur) {
                     if ($uri == $result[1]) {
                         new $controleur;
