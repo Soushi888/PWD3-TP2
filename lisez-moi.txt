@@ -1,1 +1,0 @@
-Pour que cet exemple fonctionne, il faut compléter le constructeur du contrôleur ControleurAdmin, comme indiqué en commentaire.

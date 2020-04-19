@@ -1,7 +1,13 @@
+/* CSS reset 
+   --------- */
+
 html, body, ul, li {
     padding: 0;
     margin: 0;
 }
+
+/* CSS règles générales 
+   -------------------- */
 
 html, body {
     height: 100%;
@@ -17,63 +23,21 @@ h1 {
     color: white;
 }
 
-a {
+a{
     text-decoration: none;
     color: white;
 }
 
-
+/* CSS règles du gabarit de la page 
+   -------------------------------- */
 
 #global {
-    position: relative;
     min-height: 95%;
-    width: 80%;
+    width: 70%;
     margin: auto;
     text-align: left;
     padding: 5px 20px;
     background: #333534;
-}
-
-#info {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    color: #fff;
-}
-
-#langue {
-    position: relative;
-    display: inline-block;
-    padding: 0 10px;
-    margin-right: 20px;
-    color: cyan;
-    cursor: pointer;
-}
-
-#langue ul {
-    display: none;
-}
-
-#langue:hover ul {
-    position: absolute;
-    display: block;
-}
-
-#langue ul li  a {
-    display: block;
-    padding: 8px;
-    line-height: 15px;
-    width: 60px;
-    border-top: 1px solid #555;
-}
-
-
-#identifiant {
-    display: inline-block;
-}
-
-header p a {
-    margin-right: 30px;
 }
 
 header ul {
@@ -98,61 +62,17 @@ header ul li:not(.active) a:hover {
     cursor: default;
 }
 
+
+/* CSS partie spécifique de la page 
+   -------------------------------- */
+
 #contenu {
     margin-bottom : 30px;
 }
 
-header p a, #contenu a {
-    color:cyan;
-}
-
-header p a:hover, #contenu a:hover {
-    text-decoration: underline;   
-}
-
-#contenu td a:last-of-type {
-    margin-left: 30px;
-}
-
-select, input {
-    padding: 3px 10px;
-    margin: 0 20px 0 5px;
-    color: #fff;
-    background-color: #999;
-    border: none;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: 16px;
-}
-
-input {
-    padding: 4px 20px;
-}
-
-input[type="submit"] {
-    background-color: cadetblue;
-}
-
-input[type="submit"]:hover {
-    background-color: darkcyan;
-}
-
-input[name="annee"] {
-    width: 80px;
-}
-
-input[name="titre"], input[name="titreContient"] {
-    width: 400px;
-}
-
 .erreur {
-    padding: 0;
-    margin: 5px 0 20px;
-    color: red;
+    color: brown;
     font-weight: bold;
-}
-
-.messageRetourAction {
-    color: white;
 }
 
 table {
@@ -167,21 +87,4 @@ tr:first-of-type {
 
 tr {
     line-height: 30px;
-}
-
-#ajout, #modification, #connexion {
-    margin-left: 30px;
-}
-
-#ajout input, #modification input, #ajout select, #modification select, #connexion input {
-    display: block;
-    margin: 5px 0 0;
-}
-
-#connexion input {
-    margin-bottom: 40px;
-}
-
-#ajout select, #modification select {
-    margin-bottom: 50px;
 }
