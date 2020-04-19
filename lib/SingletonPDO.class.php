@@ -1,9 +1,9 @@
 <?php
- 
+
 class SingletonPDO extends PDO
 {
     private static $instance = null;    // pointeur vers l'objet SingletonPDO instancié dans getInstance()
-  
+
     const DEFAULT_SQL_HOST = 'localhost';
     const DEFAULT_SQL_DBN  = 'pwd3_tp2';
     const DEFAULT_SQL_USER = 'root';
@@ -17,13 +17,16 @@ class SingletonPDO extends PDO
      */
     private function __construct()
     {
-        parent::__construct('mysql:host='.self::DEFAULT_SQL_HOST.';dbname='.self::DEFAULT_SQL_DBN,
-                                     self::DEFAULT_SQL_USER,
-                                     self::DEFAULT_SQL_PASS);
-  
+        parent::__construct(
+            'mysql:host=' . self::DEFAULT_SQL_HOST . ';dbname=' . self::DEFAULT_SQL_DBN,
+            self::DEFAULT_SQL_USER,
+            self::DEFAULT_SQL_PASS
+        );
     }
-  
-    private function __clone (){}  // portée private pour empêcher le clonage 
+
+    private function __clone()
+    {
+    }  // portée private pour empêcher le clonage 
 
     /**
      * Méthode statique de classe
@@ -32,9 +35,8 @@ class SingletonPDO extends PDO
      * @return le pointeur vers l'instance unique de SingletonPDO
      */
     public static function getInstance()
-    {  
-        if(is_null(self::$instance))
-        {
+    {
+        if (is_null(self::$instance)) {
             self::$instance = new SingletonPDO();
             self::$instance->exec("SET NAMES UTF8");
             self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

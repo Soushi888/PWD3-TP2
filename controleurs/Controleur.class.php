@@ -26,10 +26,10 @@ class Controleur {
             //   dans $result[0] l'uri complète
             //   dans $result[1] "livres", soit la partie à droite de $base_uri et avant le query string
             //   dans $result[2]  le query string qui n'est pas exploité ici
-            $regExp = '/^'.self::$base_uri.'([^\?]*)(\?.*)?$/';
+            $regExp = '/^'.self::$base_uri.'([^\?]*)(\?.*)?$/i';
             $requestUri = strtolower($_SERVER["REQUEST_URI"]);
             if (preg_match($regExp, $requestUri, $result)) {
-                var_dump($result); exit; // DEBUG P41
+                // var_dump($result); exit; // DEBUG P41
                 foreach ($this->controleurs as $uri => $controleur) {
                     if ($uri == $result[1]) {
                         new $controleur;
