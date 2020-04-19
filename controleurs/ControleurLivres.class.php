@@ -1,21 +1,39 @@
 <?php
 
-class ControleurLivres {
+class ControleurLivres
+{
 
-    public function __construct() {
+    public function __construct()
+    {
 
-        $this->getLivres();
+        if (isset($_GET["trie"])) {
+            $trie = $_GET["trie"];
+        } else {
+            $trie = "annee";
+        }
+
+        if (isset($_GET["ordre"])) {
+            $ordre = $_GET["ordre"];
+        } else {
+            $ordre = "ASC";
+        }
+
+        $this->getLivres($trie, $ordre);
     }
 
     /**
      * Affiche la page de liste des livres
      *
-     */    
-    private function getLivres() {
-        
+     */
+    private function getLivres($trie, $ordre)
+    {
+
         $reqPDO = new RequetesPDO();
-        $livres = $reqPDO->getLivres();
-        $vue = new Vue("Livres", array('livres' => $livres));
+        $livres = $reqPDO->getLivres($trie, $ordre);
+        $auteurs = $reqPDO->getAuteurs();
+        $vue = new Vue("Livres", [
+            'livres' => $livres,
+            'auteurs' => $auteurs
+        ]);
     }
-    
 }
