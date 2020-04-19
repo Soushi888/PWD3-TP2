@@ -27,20 +27,17 @@
         <th>Année</th>
     </tr>
 
-    <?php // foreach ($donnees['livres'] as $livre): // utilisation directe de $donnees 
-    ?>
-
     <?php foreach ($livres as $livre) : // variable $livres provenant de la fonction extract($donnees) 
+        foreach ($auteurs as $auteur) :
+            if ($livre['id_auteur'] == $auteur['id_auteur'])
+                $livre['auteur'] = $auteur["prenom"] . " " . $auteur["nom"];
+        endforeach;
     ?>
         <tr>
             <?php // "affichage en utilisant le résultat de la fonction extract($donnees)" 
             ?>
             <td><?php echo $livre['titre'] ?></td>
-            <?php foreach ($auteurs as $auteur) :
-                if ($auteur['id_auteur'] == $livre['id_auteur']) : ?>
-                    <td><?php echo $auteur["prenom"] . " " . $auteur["nom"] ?></td>
-            <?php endif;
-            endforeach; ?>
+            <td><?php echo $livre['auteur'] ?></td>
             <td><?php echo $livre['annee'] ?></td>
         </tr>
     <?php endforeach; ?>
