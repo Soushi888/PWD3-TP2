@@ -30,15 +30,15 @@
     <?php foreach ($livres as $livre) : // variable $livres provenant de la fonction extract($donnees) 
         foreach ($auteurs as $auteur) :
             if ($livre['id_auteur'] == $auteur['id_auteur'])
-                $livre['auteur'] = $auteur["prenom"] . " " . $auteur["nom"];
+                $livre["auteur"] = $auteur['auteur'];
         endforeach;
+
     ?>
         <tr>
-            <?php // "affichage en utilisant le résultat de la fonction extract($donnees)" 
-            ?>
             <td><?php echo $livre['titre'] ?></td>
             <td><?php echo $livre['auteur'] ?></td>
             <td><?php echo $livre['annee'] ?></td>
         </tr>
-    <?php endforeach; ?>
+    <?php
+    endforeach; ?>
 </table>
