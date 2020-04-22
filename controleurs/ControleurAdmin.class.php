@@ -6,34 +6,57 @@ class ControleurAdmin
 
     private $action;
     private $id;
+    private $item;
     private $messageRetourAction = "";
 
     public function __construct()
     {
 
         // coder pour stocker les variable $_GET si elles existent dans les propriétés $action et $id
-        if (isset($_GET["item"]) && $_GET['item'] == "auteur") {
-            $this->getAuteurs();
-            return;
-        }
 
-        if (isset($_GET["item"]) && $_GET['item'] == "livre") {
-            $this->getLivres();
-            return;
-        }
+        if (isset($_GET["item"])) $this->item = $_GET["item"];
+        if (isset($_GET["id"])) $this->id = $_GET["id"];
+        if (isset($_GET["action"])) $this->action = $_GET["action"];
 
-        if ((isset($_GET["item"]) && $_GET['item'] == "livre") && (isset($_GET["action"]) && $_GET['action'] == "ajouter")) {
-            echo "test";
+        if ($this->item == "livre" && $this->action == "ajouter") {
             $this->ajouterLivre();
             return;
         }
 
-        if ((isset($_GET["item"]) && $_GET['item'] == "livre") && (isset($_GET["action"]) && $_GET['action'] == "modifier")) {
-            $this->modifierLivre($_GET["id"]);
+        if ($this->item == "livre" && $this->action == "modifier") {
+            $this->modifierLivre();
             return;
         }
 
+        if ($this->item == "livre" && $this->action == "supprimer") {
+            $this->supprimerLivre();
+            return;
+        }
 
+        if ($this->item == "auteur" && $this->action == "ajouter") {
+            $this->ajouterAuteur();
+            return;
+        }
+
+        if ($this->item == "auteur" && $this->action == "modifier") {
+            $this->modifierAuteur();
+            return;
+        }
+
+        if ($this->item == "auteur" && $this->action == "supprimer") {
+            $this->supprimerAuteur();
+            return;
+        }
+
+        if ($this->item == "auteur") {
+            $this->getAuteurs();
+            return;
+        }
+
+        if ($this->item == "livre") {
+            $this->getLivres();
+            return;
+        }
 
         $this->getLivres();
     }
@@ -72,6 +95,39 @@ class ControleurAdmin
         $vue = new Vue(
             "AdminListeAuteurs",
             array('auteurs' => $auteurs, 'messageRetourAction' => $messageRetourAction),
+            "gabaritAdmin"
+        );
+    }
+
+    /**
+     * Ajout d'un auteur
+     *
+     */
+    private function ajouterAuteur()
+    {
+
+        $reqPDO = new RequetesPDO();
+
+        $auteurs = $reqPDO->getAuteurs();
+
+        if (count($_POST) !== 0) {
+
+            $oAuteur = new Auteur(...array_values($_POST));
+            $erreurs = $oAuteur->erreurs;
+            if (count($erreurs) === 0) {
+                $lastInsertId = $reqPDO->ajouterAuteur($oAuteur->nom, $oAuteur->prenom);
+                $this->messageRetourAction = "Ajout du auteur numéro $lastInsertId effectué.";
+                $this->getAuteurs();
+                exit;
+            }
+        } else {
+            $erreurs = [];
+            $oAuteur = new Auteur();
+        }
+
+        $vue = new Vue(
+            "AdminAjoutAuteur",
+            array('prenom' => $oAuteur->prenom, 'nom' => $oAuteur->nom, 'erreurs' => $erreurs),
             "gabaritAdmin"
         );
     }
@@ -141,19 +197,21 @@ class ControleurAdmin
     }
 
     /**
-     * Modification d'un auteur
+     * Modification d'un livre
      *
      */
-    private function modifierLivre($id)
+    private function modifierLivre()
     {
 
         $reqPDO = new RequetesPDO();
 
+        $auteurs = $reqPDO->getAuteurs();
+
         if (count($_POST) !== 0) {
-            $oLivre = new Livre($_POST['titre'], $_POST['auteur'], $_POST['annee'], $_POST['cle']);
+            $oLivre = new Livre(...array_values($_POST));
             $erreurs = $oLivre->erreurs;
             if (count($erreurs) === 0) {
-                $reqPDO->modifierLivre($oLivre->titre, $oLivre->auteur, $oLivre->annee, $this->id);
+                $reqPDO->modifierLivre($oLivre->titre, $oLivre->id_auteur, $oLivre->annee, $this->id);
                 $this->messageRetourAction = "Modification du livre numéro $this->id effectuée.";
                 $this->getLivres();
                 exit;
@@ -161,12 +219,12 @@ class ControleurAdmin
         } else {
             $erreurs = [];
             $Livre = $reqPDO->getLivre($this->id);
-            $oLivre = new Livre($Livre['titre'], $Livre['auteur'], $Livre['annee'], $Livre['cle']);
+            $oLivre = new Livre($Livre['titre'], $Livre['id_auteur'], $Livre['annee'], $Livre['id_livre']);
         }
 
         $vue = new Vue(
             "AdminModificationLivre",
-            array('id_Livre' => $this->id, 'titre' => $oLivre->titre, 'auteur' => $oLivre->auteur, 'annee' => $oLivre->annee, 'erreurs' => $erreurs),
+            array('id_livre' => $this->id, 'titre' => $oLivre->titre, 'auteurs' => $auteurs, 'id_auteur' => $oLivre->id_auteur, 'annee' => $oLivre->annee, 'erreurs' => $erreurs),
             "gabaritAdmin"
         );
     }
@@ -182,5 +240,17 @@ class ControleurAdmin
         $reqPDO->supprimerAuteur($this->id);
         $this->messageRetourAction = "Suppression de l'auteur numéro $this->id effectuée.";
         $this->getAuteurs();
+    }
+
+    /**
+     * Suppression d'un livre
+     *
+     */
+    private function supprimerLivre()
+    {
+        $reqPDO = new RequetesPDO();
+        $reqPDO->supprimerLivre($this->id);
+        $this->messageRetourAction = "Suppression du livre numéro $this->id effectuée.";
+        $this->getLivres();
     }
 }

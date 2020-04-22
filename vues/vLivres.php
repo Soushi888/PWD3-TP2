@@ -32,7 +32,6 @@
             if ($livre['id_auteur'] == $auteur['id_auteur'])
                 $livre["auteur"] = $auteur['auteur'];
         endforeach;
-
     ?>
         <tr>
             <td><?php echo $livre['titre'] ?></td>

@@ -27,7 +27,7 @@ class RequetesPDO
         $oPDOStatement = $sPDO->prepare(
             "SELECT id_auteur,
              CONCAT(nom, ' ', prenom)  AS auteur
-             FROM auteur ORDER  BY id_auteur DESC"
+             FROM auteur ORDER  BY id_auteur ASC"
         );
         $oPDOStatement->execute();
         $auteurs = $oPDOStatement->fetchAll(PDO::FETCH_ASSOC);
@@ -117,7 +117,7 @@ class RequetesPDO
     public function modifierLivre($titre, $auteur, $annee, $cle)
     {
         $sPDO = SingletonPDO::getInstance();
-        $req = "UPDATE livre SET titre=:titre, auteur=:auteur, annee=:annee WHERE id_livre=:id_livre";
+        $req = "UPDATE livre SET titre=:titre, id_auteur=:auteur, annee=:annee WHERE id_livre=:id_livre";
         $oPDOStatement = $sPDO->prepare($req);
         $oPDOStatement->bindValue(":titre", $titre);
         $oPDOStatement->bindValue(":auteur", $auteur);
@@ -136,6 +136,19 @@ class RequetesPDO
         $req = "DELETE FROM auteur WHERE id_auteur=:id_auteur";
         $oPDOStatement = $sPDO->prepare($req);
         $oPDOStatement->bindValue(":id_auteur", $cle);
+        $oPDOStatement->execute();
+    }
+
+    /**
+     * Suppression d'un livre
+     *
+     */
+    public function supprimerLivre($cle)
+    {
+        $sPDO = SingletonPDO::getInstance();
+        $req = "DELETE FROM livre WHERE id_livre=:id_livre";
+        $oPDOStatement = $sPDO->prepare($req);
+        $oPDOStatement->bindValue(":id_livre", $cle);
         $oPDOStatement->execute();
     }
 }

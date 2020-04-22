@@ -9,6 +9,7 @@
         <th>Id livre</th>
         <th>Livre</th>
         <th>Auteur</th>
+        <th>Année</th>
         <th>Actions</th>
     </tr>
     <?php foreach ($livres as $livre): 
@@ -21,6 +22,7 @@
         <td><?= $livre['id_livre'] ?></td>
         <td><?= $livre['titre'] ?></td>
         <td><?= $livre['auteur'] ?></td>
+        <td><?= $livre['annee'] ?></td>
         <td>
             <a href="admin?item=livre&id=<?= $livre['id_livre'] ?>&action=modifier">Modifier</a>
             <a href="admin?item=livre&id=<?= $livre['id_livre'] ?>&action=supprimer">Supprimer</a>

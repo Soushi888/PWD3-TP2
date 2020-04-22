@@ -53,7 +53,7 @@ class Livre
         $titre = trim($titre);
         $this->titre = ucwords($titre);
         $regExp =
-            '/^[a-zA-ZéèêëïôÉ]{2,}([- ][a-zA-ZéèêëïôÉ]{2,})*$/';
+            '/^[a-zA-ZéèêëïôÉ0-9 -\']{2,}$/';
         if (!preg_match($regExp, $titre)) {
             $this->erreurs['titre'] =
                 "Au moins 2 caractères alphabétiques";
@@ -79,7 +79,7 @@ class Livre
     /**
      *   Setter annee
      */
-    public function setannee($annee = NULL)
+    public function setAnnee($annee = NULL)
     {
         unset($this->erreurs['annee']);
         $annee = trim($annee);
