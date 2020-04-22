@@ -2,7 +2,12 @@
 
 class ControleurLivres
 {
-
+    
+    /**
+     * __construct
+     *
+     * @return void
+     */
     public function __construct()
     {
 
@@ -28,7 +33,7 @@ class ControleurLivres
     private function getLivres($trie, $ordre)
     {
         $reqPDO = new RequetesPDO();
-        
+
         $livres = $reqPDO->getLivres($trie, $ordre);
         $auteurs = $reqPDO->getAuteurs();
 
@@ -36,7 +41,7 @@ class ControleurLivres
             'livres' => $livres,
             'auteurs' => $auteurs
         ];
-        
+
         $vue = new Vue("Livres", $donnees);
     }
 }

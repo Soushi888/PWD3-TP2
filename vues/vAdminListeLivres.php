@@ -7,13 +7,20 @@
 <table>
     <tr>
         <th>Id livre</th>
-        <th>livre</th>
+        <th>Livre</th>
+        <th>Auteur</th>
         <th>Actions</th>
     </tr>
-    <?php foreach ($livres as $livre): ?>
+    <?php foreach ($livres as $livre): 
+        foreach ($auteurs as $auteur) :
+            if ($livre['id_auteur'] == $auteur['id_auteur'])
+                $livre["auteur"] = $auteur['auteur'];
+        endforeach;
+    ?>
     <tr>
         <td><?= $livre['id_livre'] ?></td>
         <td><?= $livre['titre'] ?></td>
+        <td><?= $livre['auteur'] ?></td>
         <td>
             <a href="admin?item=livre&id=<?= $livre['id_livre'] ?>&action=modifier">Modifier</a>
             <a href="admin?item=livre&id=<?= $livre['id_livre'] ?>&action=supprimer">Supprimer</a>

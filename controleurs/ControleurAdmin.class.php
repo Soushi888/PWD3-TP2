@@ -12,17 +12,23 @@ class ControleurAdmin
     {
 
         // coder pour stocker les variable $_GET si elles existent dans les propriétés $action et $id
-        if (isset($_GET["item"]) && $_GET['item'] = "auteur") {
+        if (isset($_GET["item"]) && $_GET['item'] == "auteur") {
             $this->getAuteurs();
+            return;
+        } 
+
+        if ((isset($_GET["item"]) && $_GET['item'] == "livre") && (isset($_GET["action"]) && $_GET['action'] == "ajouter")) {
+            $this->ajouterLivre();
+            return;
+        }
+
+        if (isset($_GET["item"]) && $_GET['item'] == "livre") {
+            $this->getLivres();
             return;
         }
 
 
-        // coder pour exécuter la méthode associée à la propriété $action (provenant du query string)
-
-
         $this->getLivres();
-
     }
 
     /**
@@ -34,11 +40,13 @@ class ControleurAdmin
 
         $reqPDO = new RequetesPDO();
         $livres = $reqPDO->getLivres();
+        $auteurs = $reqPDO->getAuteurs();
+
         $messageRetourAction = $this->messageRetourAction;
         $this->messageRetourAction = "";
         $vue = new Vue(
             "AdminListeLivres",
-            array('livres' => $livres, 'messageRetourAction' => $messageRetourAction),
+            array('livres' => $livres, 'auteurs' => $auteurs, 'messageRetourAction' => $messageRetourAction),
             "gabaritAdmin"
         );
     }
@@ -63,33 +71,34 @@ class ControleurAdmin
     }
 
     /**
-     * Ajout d'un auteur
+     * Ajout d'un livre
      *
      */
-    private function ajouterAuteur()
+    private function ajouterLivre()
     {
 
         $reqPDO = new RequetesPDO();
 
+        $auteurs = $reqPDO->getAuteurs();
+
         if (count($_POST) !== 0) {
-            // DEBUG var_dump($_POST); exit;
-            // $oAuteur = new Auteur($_POST['nom'], $_POST['prenom']);
-            $oAuteur = new Auteur(...array_values($_POST));
-            $erreurs = $oAuteur->erreurs;
+
+            $oLivre = new Livre(...array_values($_POST));
+            $erreurs = $oLivre->erreurs;
             if (count($erreurs) === 0) {
-                $lastInsertId = $reqPDO->ajouterAuteur($oAuteur->nom, $oAuteur->prenom);
-                $this->messageRetourAction = "Ajout de l'auteur numéro $lastInsertId effectué.";
-                $this->getAuteurs();
+                $lastInsertId = $reqPDO->ajouterLivre($oLivre->titre, $oLivre->id_auteur, $oLivre->annee);
+                $this->messageRetourAction = "Ajout du livre numéro $lastInsertId effectué.";
+                $this->getLivres();
                 exit;
             }
         } else {
             $erreurs = [];
-            $oAuteur = new Auteur();
+            $oLivre = new Livre();
         }
 
         $vue = new Vue(
-            "AdminAjoutAuteur",
-            array('nom' => $oAuteur->nom, 'prenom' => $oAuteur->prenom, 'erreurs' => $erreurs),
+            "AdminAjoutLivre",
+            array('titre' => $oLivre->titre, 'auteurs' => $auteurs, 'auteur' => $oLivre->id_auteur, 'annee' => $oLivre->annee, 'erreurs' => $erreurs),
             "gabaritAdmin"
         );
     }

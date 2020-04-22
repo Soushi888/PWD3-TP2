@@ -13,7 +13,7 @@
             <h1>Administration de la bibliothèque</h1>
             <ul>
                 <li><a <?= isset($_GET["item"]) && $_GET["item"] == "auteur" ? 'class="active"' : "" ?>  href="admin?item=auteur">Auteurs</a></li>
-                <li><a <?= !isset($_GET["item"]) ? 'class="active"' : "" ?>  href="admin">Livres</a></li>
+                <li><a <?= !isset($_GET["item"]) || $_GET["item"] == "livre" ? 'class="active"' : "" ?>  href="admin?item=livre">Livres</a></li>
             </ul>
         </header>
         <div id="contenu">
