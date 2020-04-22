@@ -1,6 +1,6 @@
 <section id="ajout">
     <h1>Modification du livre <?= $titre ?></h1>
-    <p><i>Pesnsez à ajouter ou modifier l'auteur au préalable.</i></p>
+    <p><i>Pensez à ajouter ou modifier l'auteur au préalable.</i></p>
     <form method="POST" action="admin?item=livre&action=ajouter">
 
         <label>Titre</label>

@@ -50,6 +50,21 @@ class RequetesPDO
     }
 
     /**
+     * récupération d'un auteur dans la table auteur
+     *
+     */
+    public function getLivre($cle)
+    {
+        $sPDO = SingletonPDO::getInstance();
+        $req = "SELECT id_livre, titre, id_auteur, annee FROM livre WHERE id_livre=:id_livre";
+        $oPDOStatement = $sPDO->prepare($req);
+        $oPDOStatement->bindValue(":id_livre", $cle);
+        $oPDOStatement->execute();
+        $livre = $oPDOStatement->fetch(PDO::FETCH_ASSOC);
+        return $livre;
+    }
+
+    /**
      * Ajout d'un livre dans la table livre
      *
      */
@@ -92,6 +107,22 @@ class RequetesPDO
         $oPDOStatement->bindValue(":nom", $nom);
         $oPDOStatement->bindValue(":prenom", $prenom);
         $oPDOStatement->bindValue(":id_auteur", $cle);
+        $oPDOStatement->execute();
+    }
+
+    /**
+     * Modification d'un livre dans la table livre
+     *
+     */
+    public function modifierLivre($titre, $auteur, $annee, $cle)
+    {
+        $sPDO = SingletonPDO::getInstance();
+        $req = "UPDATE livre SET titre=:titre, auteur=:auteur, annee=:annee WHERE id_livre=:id_livre";
+        $oPDOStatement = $sPDO->prepare($req);
+        $oPDOStatement->bindValue(":titre", $titre);
+        $oPDOStatement->bindValue(":auteur", $auteur);
+        $oPDOStatement->bindValue(":annee", $annee);
+        $oPDOStatement->bindValue(":id_livre", $cle);
         $oPDOStatement->execute();
     }
 

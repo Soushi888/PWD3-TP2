@@ -15,17 +15,24 @@ class ControleurAdmin
         if (isset($_GET["item"]) && $_GET['item'] == "auteur") {
             $this->getAuteurs();
             return;
-        } 
-
-        if ((isset($_GET["item"]) && $_GET['item'] == "livre") && (isset($_GET["action"]) && $_GET['action'] == "ajouter")) {
-            $this->ajouterLivre();
-            return;
         }
 
         if (isset($_GET["item"]) && $_GET['item'] == "livre") {
             $this->getLivres();
             return;
         }
+
+        if ((isset($_GET["item"]) && $_GET['item'] == "livre") && (isset($_GET["action"]) && $_GET['action'] == "ajouter")) {
+            echo "test";
+            $this->ajouterLivre();
+            return;
+        }
+
+        if ((isset($_GET["item"]) && $_GET['item'] == "livre") && (isset($_GET["action"]) && $_GET['action'] == "modifier")) {
+            $this->modifierLivre($_GET["id"]);
+            return;
+        }
+
 
 
         $this->getLivres();
@@ -37,7 +44,6 @@ class ControleurAdmin
      */
     private function getLivres()
     {
-
         $reqPDO = new RequetesPDO();
         $livres = $reqPDO->getLivres();
         $auteurs = $reqPDO->getAuteurs();
@@ -134,6 +140,36 @@ class ControleurAdmin
         );
     }
 
+    /**
+     * Modification d'un auteur
+     *
+     */
+    private function modifierLivre($id)
+    {
+
+        $reqPDO = new RequetesPDO();
+
+        if (count($_POST) !== 0) {
+            $oLivre = new Livre($_POST['titre'], $_POST['auteur'], $_POST['annee'], $_POST['cle']);
+            $erreurs = $oLivre->erreurs;
+            if (count($erreurs) === 0) {
+                $reqPDO->modifierLivre($oLivre->titre, $oLivre->auteur, $oLivre->annee, $this->id);
+                $this->messageRetourAction = "Modification du livre numéro $this->id effectuée.";
+                $this->getLivres();
+                exit;
+            }
+        } else {
+            $erreurs = [];
+            $Livre = $reqPDO->getLivre($this->id);
+            $oLivre = new Livre($Livre['titre'], $Livre['auteur'], $Livre['annee'], $Livre['cle']);
+        }
+
+        $vue = new Vue(
+            "AdminModificationLivre",
+            array('id_Livre' => $this->id, 'titre' => $oLivre->titre, 'auteur' => $oLivre->auteur, 'annee' => $oLivre->annee, 'erreurs' => $erreurs),
+            "gabaritAdmin"
+        );
+    }
 
     /**
      * Suppression d'un auteur
